@@ -1,8 +1,8 @@
 {
   "name": "magic-converter",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Website & API to convert images into GCode",
+  "author": "Addoun Abdellah",
   "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
@@ -23,6 +23,7 @@
     "@nestjs/common": "^6.7.2",
     "@nestjs/core": "^6.7.2",
     "@nestjs/platform-express": "^6.7.2",
+    "img2gcode": "^1.1.2",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.0",
     "rxjs": "^6.5.3"

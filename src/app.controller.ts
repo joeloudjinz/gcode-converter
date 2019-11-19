@@ -4,15 +4,15 @@ import {
   UseInterceptors,
   UploadedFile,
 } from '@nestjs/common';
-import { AppService } from './app.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ConverterService } from './converter/converter.service';
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly converterService: ConverterService) {}
 
   @Post('/convert')
   @UseInterceptors(FileInterceptor('image'))
   convert(@UploadedFile() image) {
-    return this.appService.startConversionProcess(image);
+    return this.converterService.start(image);
   }
 }

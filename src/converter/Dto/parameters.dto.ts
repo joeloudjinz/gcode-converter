@@ -14,6 +14,6 @@ export class Parameters {
     public safeZ: number = 2,
     public feedRate: FeedRate = new FeedRate(),
     public laser: Laser = new Laser(),
-    public dirImg: string = null,
+    public dirImg: string = '',
   ) {}
 }

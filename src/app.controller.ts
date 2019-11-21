@@ -16,7 +16,7 @@ export class AppController {
   @Post('/convert')
   @UseInterceptors(FileInterceptor('image'))
   convert(
-    @UploadedFile() image,
+    @UploadedFile() image: any,
     @Body(ConversionParametersParser) parameters: Parameters,
   ) {
     return this.converterService.start(image, parameters);

@@ -1,6 +1,14 @@
+import { IsDefined, IsString } from 'class-validator';
+
 export class Laser {
-  constructor(
-    public commandPowerOn: string = 'M04',
-    public commandPowerOff: string = 'M05',
-  ) {}
+  @IsDefined()
+  @IsString()
+  public commandPowerOn: string;
+  @IsDefined()
+  @IsString()
+  public commandPowerOff: string;
+  constructor(commandPowerOn: string = 'M04', commandPowerOff: string = 'M05') {
+    this.commandPowerOn = commandPowerOn;
+    this.commandPowerOff = commandPowerOff;
+  }
 }

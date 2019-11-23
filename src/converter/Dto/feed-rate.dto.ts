@@ -1,3 +1,14 @@
+import { IsDefined, IsNumber } from 'class-validator';
+
 export class FeedRate {
-  constructor(public work: number = 1200, public idle: number = 3000) {}
+  @IsDefined()
+  @IsNumber()
+  public work: number;
+  @IsDefined()
+  @IsNumber()
+  public idle: number;
+  constructor(work: number = 3000, idle: number = 1200) {
+    this.work = work;
+    this.idle = idle;
+  }
 }

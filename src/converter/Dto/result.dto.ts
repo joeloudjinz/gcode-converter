@@ -18,11 +18,11 @@ export class ConversionResult {
   calculateDuration() {
     const difference = new Date(this.ended.getTime() - this.started.getTime());
     if (difference.getMinutes() !== 0) {
-      this.duration = `${difference.getMinutes()} m `;
+      this.duration = `${difference.getMinutes()} m`;
     } else if (difference.getSeconds() !== 0) {
-      this.duration += `${difference.getSeconds()} s `;
+      this.duration += ` ${difference.getSeconds()} s`;
     } else if (difference.getMilliseconds() !== 0) {
-      this.duration += `${difference.getMilliseconds()} ms`;
+      this.duration += ` ${difference.getMilliseconds()} ms`;
     }
   }
 }

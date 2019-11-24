@@ -9,7 +9,6 @@ import { Parameters } from '../Dto/parameters.dto';
 import { FeedRate } from '../Dto/feed-rate.dto';
 import { Invest } from '../Dto/invest.dto';
 import { Laser } from '../Dto/laser.dto';
-import { Validator } from 'class-validator';
 
 @Injectable()
 export class ConversionParametersParser implements PipeTransform {
@@ -19,7 +18,7 @@ export class ConversionParametersParser implements PipeTransform {
    */
   private parseFeedRate(old: any): FeedRate {
     if (old.feedRate) {
-      const feedRate = JSON.parse(old.feedRate);
+      const feedRate = old.feedRate;
       return new FeedRate(parseInt(feedRate.work), parseInt(feedRate.idle));
     }
     return new FeedRate();
@@ -33,7 +32,7 @@ export class ConversionParametersParser implements PipeTransform {
     if (!old.laserMode || old.laserMode == 'false') {
       return null;
     }
-    const laser = JSON.parse(old.laser);
+    const laser = old.laser;
     if (!laser.commandPowerOn || !laser.commandPowerOff) {
       throw new BadRequestException({
         status: HttpStatus.BAD_REQUEST,
@@ -45,7 +44,7 @@ export class ConversionParametersParser implements PipeTransform {
   }
 
   public transform(old: any, metadata: ArgumentMetadata) {
-    return new Parameters(
+    const newParams = new Parameters(
       parseInt(old.toolDiameter),
       parseInt(old.sensitivity),
       parseInt(old.scaleAxes),
@@ -58,5 +57,7 @@ export class ConversionParametersParser implements PipeTransform {
       old.laserMode,
       this.shouldUseLaser(old),
     );
+
+    return newParams;
   }
 }

@@ -17,14 +17,8 @@ export class AppController {
   @UseInterceptors(FileInterceptor('image'))
   convert(
     @UploadedFile() image: any,
-    @Body(
-      new ValidationPipe({
-        transformOptions: { enableImplicitConversion: true },
-        validationError: { target: false },
-      }),
-      ConversionParametersParser,
-    )
-    parameters: Parameters,
+    @Body('parameters')
+    parameters: string,
   ) {
     return this.converterService.start(image, parameters);
   }

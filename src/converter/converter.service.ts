@@ -13,10 +13,11 @@ export class ConverterService {
    * @param image object
    * @param parameters
    */
-  async start(image: any, parameters: Parameters) {
-    parameters.dirImg = image.path;
-    const data = await img2gcode.start({ ...parameters });
-    return this.prepareResult(data, parameters, Date.now());
+  async start(image: any, parameters: string) {
+    const parsed = JSON.parse(parameters);
+    parsed.dirImg = image.path;
+    const data = await img2gcode.start({ ...parsed });
+    return this.prepareResult(data, parsed, Date.now());
   }
 
   /**

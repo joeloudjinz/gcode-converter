@@ -14,7 +14,7 @@ export class Parameters {
   public feedRate: FeedRate = new FeedRate();
   public laserMode: boolean;
   public laser: Laser = new Laser();
-  public dirImg: string = '';
+  public dirImg: string;
 
   constructor(
     toolDiameter: number,
@@ -28,6 +28,7 @@ export class Parameters {
     feedRate: FeedRate,
     laserMode: boolean,
     laser: Laser,
+    dirImg: string = '',
   ) {
     this.toolDiameter = toolDiameter;
     this.sensitivity = sensitivity;
@@ -40,5 +41,6 @@ export class Parameters {
     this.feedRate = feedRate;
     this.laserMode = laserMode;
     this.laser = laser;
+    this.dirImg = dirImg;
   }
 }

@@ -4,6 +4,9 @@ import img2gcode = require('img2gcode');
 import { ConversionResult } from './Dto/result.dto';
 import { Pixels } from './Dto/pixels.dto';
 import { Size } from './Dto/size.dto';
+import { Invest } from './Dto/invest.dto';
+import { FeedRate } from './Dto/feed-rate.dto';
+import { Laser } from './Dto/laser.dto';
 
 @Injectable()
 export class ConverterService {
@@ -14,10 +17,53 @@ export class ConverterService {
    * @param parameters
    */
   async start(image: any, parameters: string) {
-    const parsed = JSON.parse(parameters);
-    parsed.dirImg = image.path;
-    const data = await img2gcode.start({ ...parsed });
-    return this.prepareResult(data, parsed, Date.now());
+    const configuration = this.prepareConfiguration(
+      JSON.parse(parameters),
+      image.path,
+    );
+    const results = await img2gcode.start({ ...configuration });
+    return this.prepareResult(results, configuration, Date.now());
+  }
+
+  private prepareConfiguration(parsed: any, path: string) {
+    return new Parameters(
+      parsed.toolDiameter,
+      parsed.sensitivity,
+      parsed.scaleAxes,
+      parsed.deepStep,
+      this.parseInvest(parsed.invest),
+      parsed.whiteZ,
+      parsed.blackZ,
+      parsed.safeZ,
+      this.parseFeedRate(parsed.feedRate),
+      parsed.laserMode,
+      this.parseLaser(parsed),
+      path,
+    );
+  }
+
+  private parseInvest(invest: any): Invest {
+    if (invest) {
+      return new Invest(invest.x, invest.y);
+    }
+    return new Invest();
+  }
+
+  private parseFeedRate(feedRate: any): FeedRate {
+    if (feedRate) {
+      return new FeedRate(feedRate.work, feedRate.idle);
+    }
+    return new FeedRate();
+  }
+
+  private parseLaser(parsed: any): Laser {
+    if (parsed.laserMode) {
+      return new Laser(
+        parsed.laser.commandPowerOn,
+        parsed.laser.commandPowerOff,
+      );
+    }
+    return null;
   }
 
   /**

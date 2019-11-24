@@ -7,37 +7,37 @@ import { Size } from './Dto/size.dto';
 import { Invest } from './Dto/invest.dto';
 import { FeedRate } from './Dto/feed-rate.dto';
 import { Laser } from './Dto/laser.dto';
+import { ParametersValidator } from './validation.service';
 
 @Injectable()
 export class ConverterService {
+  constructor(private readonly validator: ParametersValidator) {}
   /**
    * Starts the conversion process.
    *
    * @param image object
    * @param parameters
    */
-  async start(image: any, parameters: string) {
-    const configuration = this.prepareConfiguration(
-      JSON.parse(parameters),
-      image.path,
-    );
+  async start(image: any, parameters: any) {
+    this.validator.validate(parameters);
+    const configuration = this.prepareConfiguration(parameters, image.path);
     const results = await img2gcode.start({ ...configuration });
     return this.prepareResult(results, configuration, Date.now());
   }
 
-  private prepareConfiguration(parsed: any, path: string) {
+  private prepareConfiguration(parameters: any, path: string) {
     return new Parameters(
-      parsed.toolDiameter,
-      parsed.sensitivity,
-      parsed.scaleAxes,
-      parsed.deepStep,
-      this.parseInvest(parsed.invest),
-      parsed.whiteZ,
-      parsed.blackZ,
-      parsed.safeZ,
-      this.parseFeedRate(parsed.feedRate),
-      parsed.laserMode,
-      this.parseLaser(parsed),
+      parameters.toolDiameter,
+      parameters.sensitivity,
+      parameters.scaleAxes,
+      parameters.deepStep,
+      this.parseInvest(parameters.invest),
+      parameters.whiteZ,
+      parameters.blackZ,
+      parameters.safeZ,
+      this.parseFeedRate(parameters.feedRate),
+      parameters.laserMode,
+      this.parseLaser(parameters),
       path,
     );
   }
@@ -56,11 +56,11 @@ export class ConverterService {
     return new FeedRate();
   }
 
-  private parseLaser(parsed: any): Laser {
-    if (parsed.laserMode) {
+  private parseLaser(parameters: any): Laser {
+    if (parameters.laserMode) {
       return new Laser(
-        parsed.laser.commandPowerOn,
-        parsed.laser.commandPowerOff,
+        parameters.laser.commandPowerOn,
+        parameters.laser.commandPowerOff,
       );
     }
     return null;

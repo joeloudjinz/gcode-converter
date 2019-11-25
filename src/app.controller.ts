@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ConverterService } from './converter/converter.service';
+import { Parameters } from './converter/Dto/parameters.dto';
 @Controller()
 export class AppController {
   constructor(private readonly converterService: ConverterService) {}
@@ -15,9 +16,17 @@ export class AppController {
   @UseInterceptors(FileInterceptor('image'))
   convert(
     @UploadedFile() image: any,
-    @Body('parameters')
-    parameters: string,
+    @Body(
+      new ValidationPipe({
+        transform: true,
+        transformOptions: { enableImplicitConversion: true },
+      }),
+    )
+    parameters: Parameters,
   ) {
-    return this.converterService.start(image, JSON.parse(parameters));
+    console.log(typeof parameters);
+    console.log(parameters);
+    return;
+    // return this.converterService.start(image, JSON.parse(parameters));
   }
 }

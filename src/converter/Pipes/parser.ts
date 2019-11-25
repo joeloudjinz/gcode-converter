@@ -9,7 +9,6 @@ export class ParametersParser implements PipeTransform {
       return payload;
     }
     const object = plainToClass(Parameters, JSON.parse(payload));
-    // console.log('in parser', object);
     return object;
   }
 

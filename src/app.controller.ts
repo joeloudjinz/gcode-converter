@@ -20,7 +20,6 @@ export class AppController {
     @Body('parameters', ParametersParser, ParametersValidatorPipe)
     parameters: any,
   ) {
-    console.log(parameters);
     return;
     // return this.converterService.start(image, parameters);
   }

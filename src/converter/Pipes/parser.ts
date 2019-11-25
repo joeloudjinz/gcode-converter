@@ -9,9 +9,10 @@ export class ParametersParser implements PipeTransform {
       return payload;
     }
     const object = plainToClass(Parameters, JSON.parse(payload));
-    console.log('in parser', object);
+    // console.log('in parser', object);
     return object;
   }
+
   private toValidate(metatype: Function): boolean {
     const types: Function[] = [String, Boolean, Number, Array, Object];
     return !types.includes(metatype);

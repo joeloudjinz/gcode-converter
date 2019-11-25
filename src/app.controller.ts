@@ -4,7 +4,6 @@ import {
   UseInterceptors,
   UploadedFile,
   Body,
-  ValidationPipe,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ConverterService } from './converter/converter.service';

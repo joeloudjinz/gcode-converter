@@ -3,13 +3,14 @@ import { InvalidNumberException } from './exceptions/invalid-number';
 import { OutOfRangException } from './exceptions/out-of-rang-number';
 import { MissingParameterException } from './exceptions/missing-param';
 import { Validator } from 'class-validator';
+import { Parameters } from './Dto/parameters.dto';
 
 @Injectable()
 export class ParametersValidator {
   private readonly min: number = 100;
   private readonly max: number = 1000;
   constructor(private readonly validator: Validator) {}
-  public validate(parameters: any) {
+  public validate(parameters: Parameters) {
     this.validateNumberParameter(parameters.toolDiameter, 'Tool Diameter');
     this.validateNumberParameter(parameters.sensitivity, 'Sensitivity');
     this.validateNumberParameter(parameters.deepStep, 'Deep Step');
@@ -20,9 +21,27 @@ export class ParametersValidator {
     this.validateFeedRateParameters(parameters.feedRate);
     this.validateLaserParameters(parameters.laserMode, parameters.laser);
   }
+  private parseInteger(value: any): number {
+    if (typeof value === 'string') {
+      return parseInt(value);
+    }
+    return value;
+  }
 
-  private validateNumberParameter(value: any, name: string) {
-    if (!this.isValidNumber(value)) {
+  private parseDecimal(value: any): number {
+    if (typeof value === 'string') {
+      return parseFloat(value);
+    }
+    return value;
+  }
+  private validateNumberParameter(value: number, name: string) {
+    const temp: number =
+      name === 'Sensitivity'
+        ? this.parseDecimal(value)
+        : this.parseInteger(value);
+    console.log('called', name, value);
+
+    if (!this.isValidNumber(temp)) {
       throw new InvalidNumberException(name);
     }
   }

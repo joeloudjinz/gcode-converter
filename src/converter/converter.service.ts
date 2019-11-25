@@ -18,7 +18,9 @@ export class ConverterService {
    * @param image object
    * @param parameters
    */
-  async start(image: any, parameters: any) {
+  async start(image: any, parameters: Parameters) {
+    console.log('in service', parameters);
+
     this.validator.validate(parameters);
     const configuration = this.prepareConfiguration(parameters, image.path);
     const results = await img2gcode.start({ ...configuration });

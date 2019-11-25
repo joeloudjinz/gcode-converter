@@ -18,6 +18,9 @@ export class AppController {
     @UploadedFile() image: any,
     @Body(
       new ValidationPipe({
+        validationError: {
+          target: false,
+        },
         transform: true,
         transformOptions: { enableImplicitConversion: true },
       }),

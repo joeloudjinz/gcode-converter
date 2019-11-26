@@ -8,9 +8,11 @@ import {
   IsNumber,
   Min,
   Max,
-  IsBoolean,
   IsString,
+  IsBoolean,
+  IsIn,
 } from 'class-validator';
+
 export class Parameters {
   @IsDefined()
   @IsNumber()
@@ -67,20 +69,22 @@ export class Parameters {
   private idleFeedRate: number = 1200;
 
   @IsDefined()
-  @IsBoolean()
-  public laserMode: boolean = false;
+  @IsString()
+  @IsIn(['on', 'off'])
+  public laserMode: string = 'off';
 
   @IsOptional()
   @IsString()
-  private laserPowerOn: string = 'M04';
+  private commandPowerOn: string = 'M04';
   @IsOptional()
   @IsString()
-  private laserPowerOff: string = 'M05';
+  private commandPowerOff: string = 'M05';
 
   public laser: Laser;
   public feedRate: FeedRate;
   public invest: Invest = new Invest();
   public dirImg: string;
+
   /**
    * Construct a parameter (conversion configuration) object for conversion process
    *
@@ -96,27 +100,30 @@ export class Parameters {
     this.blackZ = payload.blackZ;
     this.safeZ = payload.safeZ;
     this.laserMode = payload.laserMode;
-    this.setLaserConfiguration(payload.laserPowerOn, payload.laserPowerOff);
+    this.setLaserConfiguration(payload.commandPowerOn, payload.commandPowerOff);
     this.setFeedRateConfiguration(payload.workFeedRate, payload.idleFeedRate);
     this.dirImg = path;
     return this;
   }
 
-  private setLaserConfiguration(on: string, off: string) {
-    if (this.laserMode === false) {
+  private setLaserConfiguration(powerOn: string, powerOff: string) {
+    if (this.laserMode === 'off') {
       this.laser = null;
+      return;
     }
 
-    if (on && off) {
-      this.laser = new Laser(on, off);
+    if (powerOn && powerOff) {
+      this.laser = new Laser(powerOn, powerOff);
+      return;
     }
 
-    this.laser = new Laser(this.laserPowerOn, this.laserPowerOff);
+    this.laser = new Laser(this.commandPowerOn, this.commandPowerOff);
   }
 
   private setFeedRateConfiguration(work: number, idle: number) {
     if (work && idle) {
       this.feedRate = new FeedRate(work, idle);
+      return;
     }
 
     this.feedRate = new FeedRate(this.workFeedRate, this.idleFeedRate);

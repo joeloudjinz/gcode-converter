@@ -27,9 +27,6 @@ export class AppController {
     )
     parameters: Parameters,
   ) {
-    console.log(typeof parameters);
-    console.log(parameters);
-    return;
-    // return this.converterService.start(image, JSON.parse(parameters));
+    return this.converterService.start(image, parameters);
   }
 }

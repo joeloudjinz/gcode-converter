@@ -1,7 +1,7 @@
 export class Laser {
   public commandPowerOn: string;
   public commandPowerOff: string;
-  constructor(commandPowerOn: string = 'M04', commandPowerOff: string = 'M05') {
+  constructor(commandPowerOn: string, commandPowerOff: string) {
     this.commandPowerOn = commandPowerOn;
     this.commandPowerOff = commandPowerOff;
   }

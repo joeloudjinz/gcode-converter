@@ -14,15 +14,11 @@ export class ConverterService {
    * @param parameters
    */
   async start(image: any, parameters: Parameters) {
-<<<<<<< HEAD
-    const configuration = this.prepareConfiguration(parameters, image.path);
-=======
     const configuration = parameters.constructForConversion(
       parameters,
       image.path,
     );
     return configuration;
->>>>>>> 7af20ee2c1c5b9a41bce805d9fa7595a0b03edff
     const results = await img2gcode.start({ ...configuration });
     return this.prepareResult(results, configuration, Date.now());
   }
